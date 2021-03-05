@@ -1,24 +1,37 @@
-import logo from './logo.svg';
+// import { useState } from 'react';
 import './App.css';
+import Characters from './components/Characters';
+import Header from './components/Header';
+import GlobalContainer from './containers/GlobalContainer';
+import { ThemeProvider} from './context/ThemeContext';
+// import ThemeContext from './context/ThemeContext';
 
+// IMPORTANTE, CONTEXT NO PUEDE SER UTILIZADO ANTES DE SU INICIALIZACIÓN EN ESTE RETURN EN EL APP, POR ELLO LAS FUNCIONES O SILLAMAMOS AL CONTEXT AQUI, 
+// ANTES DEL RETURN, NO FUNCIONARÁ
 function App() {
+  // const [darkmode, setDarkmode] = useState(false);
+
+  // const handleClick = () => {
+  //   setDarkmode(!darkmode);
+  // }
+  // const { handleClick, darkmode } = useTheme();
+
+  // const onClick = () => {
+  //   handleClick()
+  // }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ThemeProvider>
+      {/* <div className={darkmode ? 'App_dark' : 'App'}> */}
+      {/* <div className={'App'}> */}
+        {/* <Header handleClick={onClick} darkmode={darkmode}/> */}
+        <GlobalContainer>
+          <Header />
+          <Characters />
+
+        </GlobalContainer>
+      {/* </div> */}
+    </ThemeProvider>
   );
 }
 

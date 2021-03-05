@@ -1,0 +1,22 @@
+.characters{
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+}
+
+.character_item{
+  border: 1px solid rgb(146, 146, 146);
+  border-radius: 5px;
+  padding: 10px;
+  margin: 15px;
+}
+
+.character_item img,p,h3{
+  margin: 10px 0px;
+}
+
+@media (min-width: 576px){
+  .characters{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
