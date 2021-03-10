@@ -1,6 +1,7 @@
-import React, { useEffect, useState, useReducer } from 'react';
+import React, { useEffect, useState, useReducer, useMemo, useRef, useCallback } from 'react';
 import '../assets/styles/components/Characters.css'
 import { useTheme } from '../context/ThemeContext';
+import Search from './Search';
 
 const initialState = {
   favorites: [],
@@ -36,6 +37,9 @@ const Characters = () => {
   const [characters, setCharacters] = useState([]);
   // este favorites es en realidad este initialState que pasamos dsede arriba y dispatch son los reducers, que aqui vemos que osn favoriteReducer
   const [favorites, dispatch] = useReducer(favoriteReducer, initialState);
+  const [search, setSearch] = useState('');
+  const searchInput = useRef(null);
+
   const { darkmode } = useTheme();
   const API = 'https://rickandmortyapi.com/api/character'
   useEffect(() => {
@@ -51,6 +55,29 @@ const Characters = () => {
   const removeFavorite = favorite => {
     dispatch({type: 'DELETE_FAVORITE', payload: favorite})
   }
+  
+  // sin CALLBACK
+  // const handleSearch = () => {
+  //   setSearch(searchInput.current.value)
+  // }
+  const handleSearch = useCallback(() => {
+    setSearch(searchInput.current.value);
+  }, [])
+  
+
+  // const filteredUsers = characters.filter((user) => {
+  //   return user.name.toLowerCase().includes(search.toLowerCase());
+  // })
+
+  // con useMemo con state y ref
+  // una indicamos la función y los valores que debe recordar
+  // en este caso de characters, debe recordar el calor de serach
+  const filteredUsers = useMemo(() => 
+    characters.filter((user) => {
+        return user.name.toLowerCase().includes(search.toLowerCase());
+    }), [characters, search]
+  )
+
 
   return (
     <>
@@ -79,12 +106,14 @@ const Characters = () => {
         </div>
         ))
       }
-
+    <Search search={search} searchInput={searchInput} handleSearch={handleSearch}/>
     </div>
     <h1>Todos los personajes</h1>
     <div className='characters'>
+      {/* cambiamos la estructura de characters a filteredUsers ya que aqui llamamos a los usuarios filtrados */}
       {
-        characters.map((character, key) => (
+        // characters.map((character, key) => (
+        filteredUsers.map((character, key) => (
           <div key={key} className='character_item'>
             <img src={character.image} alt=""/>
             <h3>{character.name}</h3>
